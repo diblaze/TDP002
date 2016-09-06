@@ -24,6 +24,7 @@ def create_deck():
 def shuffle_deck(deck_to_shuffle):
     """Shuffles a deck.
     The shuffle occurs IN PLACE, but for others to better understand this function I will return the same deck but shuffeled."""
+    #random.seed(10)
     random.shuffle(deck_to_shuffle)
 
     return deck_to_shuffle
@@ -58,7 +59,7 @@ def insert_card_by_dict(card, deck_to_insert_into):
     Use by inputting card by [i,j].
     """
     deck_to_insert_into.append(card)
-    print(card)
+    # print(card)
 
 
 def get_value_of_card(position_of_card, deck):
@@ -87,6 +88,71 @@ def display_card(position_of_card, deck):
     text_printed = value + " of " + suit
     return text_printed
 
+def find_jokers(deck):
+    jokers = [0,0]
+
+    for position, item in enumerate(deck):
+        if item == joker_a:
+            jokers[0] = position
+    for position, item in enumerate(deck):
+        if item == joker_b:
+            jokers[1] = position
+    print(jokers)
+    return jokers
+
+
+
+def move_jokers(deck,pos_a=None,pos_b=None):
+    # if joker_a is the last card in deck, remove it and insert it under the
+    # first card on top.
+    if pos_a != None and pos_b == None:
+        if pos_a == len(deck) - 1:
+            deck.pop(deck.index(joker_a))
+            deck.insert(1, joker_a)
+            pos_a = 1
+        # if joker_a is not last card in deck, then move it down one card.
+        else:
+            deck.pop(deck.index(joker_a))
+            deck.insert(pos_a + 1, joker_a)
+            pos_a += 1
+
+    if pos_b != None and pos_a == None:
+        # if joker_b is last card in deck, then remove it and insert it under the
+        # second top card
+        if pos_b == len(deck) - 1:
+            deck.pop(deck.index(joker_b))
+            deck.insert(2, joker_b)
+            pos_b = 2
+
+        # if joker_b is second last card in deck, remove it and insert it under
+        # the top card
+        elif pos_b == len(deck) - 2:
+            deck.pop(deck.index(joker_b))
+            deck.insert(1, joker_b)
+            pos_b = 1
+        # joker_b is not last/second last, move it back two positions
+        else:
+            deck.pop(deck.index(joker_b))
+            deck.insert(pos_b + 2, joker_b)
+            pos_b += 2
+
+    if pos_a != None:
+        print ("New position for first joker is: " + str(pos_a))
+        return pos_a
+    else:
+        print ("New position for second joker is: "+ str(pos_b))
+        return pos_b
+
+
+
+
+
+def rearrange_joker_list(joker_list):
+
+    if joker_list[0] > joker_list[1]:
+        joker_list[0], joker_list[1] = joker_list[1], joker_list[0]
+
+    return joker_list
 
 def solitaire_keystream(length=30, deck=create_deck()):
 
@@ -102,109 +168,91 @@ def solitaire_keystream(length=30, deck=create_deck()):
     deck_c = []
 
     # solitare alfabet
-    keys_list = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7,
+    letters_to_keys_list = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7,
                  "H": 8, "I": 9, "J": 10, "K": 11, "L": 12, "M": 13, "N": 14,
                  "O": 15, "P": 16, "Q": 17, "R": 18, "S": 19, "T": 20, "U": 21,
                  "V": 22, "W": 23, "X": 24, "Y": 25, "Z": 26}
+
+    keys_to_letters_list = {1: "A", 2:"B", 3:"C", 4: "D", 5:"E", 6: "F", 7:"G",
+                 8:"H", 9:"I", 10:"J", 11:"K", 12:"L", 13:"M", 14:"N",
+                 "O": 15, "P": 16, "Q": 17, "R": 18, "S": 19, "T": 20, 21:"U",
+                 22:"V", 23:"W", 24:"X", 25:"Y", 26:"Z"}
 
     # solitaire key
     key = ""
 
     while len(key) != length:
 
-        position_of_joker_a = 0
-        position_of_joker_b = 0
-        # find joker a
-        for position, i in enumerate(solitaire_deck):
-            if i == joker_a:
-                position_of_joker_a = position
-        # find joker b
-        for position, i in enumerate(solitaire_deck):
-            if i == joker_b:
-                position_of_joker_b = position
 
-        # TODO: Refactor to MoveJokers()
-        # if joker_a is the last card in deck, remove it and insert it under the
-        # first card on top.
-        if position_of_joker_a == len(solitaire_deck) - 1:
-            solitaire_deck.pop(solitaire_deck.index(joker_a))
-            solitaire_deck.insert(1, joker_a)
-            position_of_joker_a = 1
-        # if joker_a is not last card in deck, then move it down one card.
-        else:
-            solitaire_deck.pop(solitaire_deck.index(joker_a))
-            solitaire_deck.insert(position_of_joker_a + 1, joker_a)
-            position_of_joker_a += 1
+        jokers = [0,0]
+        # find jokers
+        jokers = find_jokers(solitaire_deck)
 
-        # if joker_b is last card in deck, then remove it and insert it under the
-        # second top card
-        if position_of_joker_b == len(solitaire_deck) - 1:
-            solitaire_deck.pop(solitaire_deck.index(joker_b))
-            solitaire_deck.insert(2, joker_b)
-            position_of_joker_b = 2
+        #move joker a
+        jokers[0] = move_jokers(solitaire_deck,jokers[0],None)
 
-        # if joker_b is second last card in deck, remove it and insert it under
-        # the top card
-        elif position_of_joker_b == len(solitaire_deck) - 2:
-            solitaire_deck.pop(solitaire_deck.index(joker_b))
-            solitaire_deck.insert(1, joker_b)
-            position_of_joker_b = 1
-        # joker_b is not last/second last, move it back two positions
-        else:
-            solitaire_deck.pop(solitaire_deck.index(joker_b))
-            solitaire_deck.insert(position_of_joker_b + 2, joker_b)
-            position_of_joker_b += 2
-
-        joker_postions = [0, 0]
-        if position_of_joker_a > position_of_joker_b:
-            joker_postions[0] = position_of_joker_b
-            joker_postions[1] = position_of_joker_a
-        else:
-            joker_postions[0] = position_of_joker_a
-            joker_postions[1] = position_of_joker_b
+        # find jokers again because deck changed because of joker a
+        jokers = find_jokers(solitaire_deck)
+        #move joker b
+        jokers[1] = move_jokers(solitaire_deck,None,jokers[1])
+        #find all jokers again
+        jokers = rearrange_joker_list(jokers)
+        print("Jokers: " + str(jokers))
 
 
         # TODO: Refactor to SplitDecks()
         # all cards from top to first joker
-        deck_a = solitaire_deck[0:joker_postions[0]]
+        deck_a = solitaire_deck[0:jokers[0]]
         # all cards between first and second joker, including jokers
-        deck_b = solitaire_deck[joker_postions[0]:joker_postions[1] + 1]
+        deck_b = solitaire_deck[jokers[0]:jokers[1] + 1]
         # all cards after the last joker
-        deck_c = solitaire_deck[joker_postions[1] + 1:len(deck) - 1]
+        deck_c = solitaire_deck[jokers[1] + 1:len(deck) - 1]
         # updated deck
         solitaire_deck = deck_c + deck_b + deck_a
 
-
-        # TODO:FIX THIS SHIT
         # get value of bottom card
         value_of_top_card = get_value_of_card(
             len(solitaire_deck) - 1, solitaire_deck)
 
         # split deck from top to number of cards needed
         deck_a = solitaire_deck[0:value_of_top_card]
+        #print(deck_a)
         # split deck from the rest remaining to second last card
         deck_b = solitaire_deck[value_of_top_card:len(deck) - 2]
+        #print(deck_b)
         # takes the last card
         deck_c = solitaire_deck[len(deck) - 2: len(deck) - 1]
+        #print (deck_c)
+
+
+
 
         # reorder the deck -> card that were NOT rearranged + cards that were
         # rearranged + last card that was not touched
         solitaire_deck = deck_b + deck_a + deck_c
 
 
-        value_of_key_card = 0;
+        value_of_key_card = 0
         # top cards value
-        print("here")
-        value_of_top_card = get_value_of_card(0, solitaire_deck)
-        if value_of_top_card != 27:
-            # card to use to encode into key
-            value_of_key_card = get_value_of_card(
-                value_of_top_card + 1, solitaire_deck)
 
-        if value_of_key_card != 27:
-            for i, item in enumerate(keys_list):
-                if(i == value_of_key_card):
-                    print(str(i) + " - " + item)
+        value_of_top_card = get_value_of_card(0, solitaire_deck)
+        print("Top card: " + str(value_of_top_card))
+
+        numbers = value_of_top_card +
+
+        if value_of_top_card < 27:
+            value_of_key_card = get_value_of_card(value_of_top_card+1,solitaire_deck)
+        elif value_of_top_card >= 27:
+            value_of_key_card = get_value_of_card()
+        print("Key card:" + str(value_of_key_card))
+
+
+        if value_of_key_card == 27:
+            continue
+
+        key += keys_to_letters_list[value_of_key_card]
+        print(key)
+
 
 
     return key
