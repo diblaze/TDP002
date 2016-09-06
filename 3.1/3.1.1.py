@@ -24,7 +24,7 @@ def create_deck():
 def shuffle_deck(deck_to_shuffle):
     """Shuffles a deck.
     The shuffle occurs IN PLACE, but for others to better understand this function I will return the same deck but shuffeled."""
-    #random.seed(10)
+    random.seed(10)
     random.shuffle(deck_to_shuffle)
 
     return deck_to_shuffle
@@ -106,7 +106,7 @@ def move_jokers(deck,pos_a=None,pos_b=None):
     # if joker_a is the last card in deck, remove it and insert it under the
     # first card on top.
     if pos_a != None and pos_b == None:
-        if pos_a == len(deck) - 1:
+        if pos_a == len(deck):
             deck.pop(deck.index(joker_a))
             deck.insert(1, joker_a)
             pos_a = 1
@@ -199,8 +199,6 @@ def solitaire_keystream(length=30, deck=create_deck()):
         jokers = rearrange_joker_list(jokers)
         print("Jokers: " + str(jokers))
 
-
-        # TODO: Refactor to SplitDecks()
         # all cards from top to first joker
         deck_a = solitaire_deck[0:jokers[0]]
         # all cards between first and second joker, including jokers
@@ -238,20 +236,18 @@ def solitaire_keystream(length=30, deck=create_deck()):
         value_of_top_card = get_value_of_card(0, solitaire_deck)
         print("Top card: " + str(value_of_top_card))
 
-        numbers = value_of_top_card +
+        #numbers = value_of_top_card +
 
-        if value_of_top_card < 27:
+        if value_of_top_card <= 13:
             value_of_key_card = get_value_of_card(value_of_top_card+1,solitaire_deck)
-        elif value_of_top_card >= 27:
-            value_of_key_card = get_value_of_card()
+        #elif value_of_top_card >= 13:
+            #value_of_key_card = get_value_of_card()
         print("Key card:" + str(value_of_key_card))
 
 
-        if value_of_key_card == 27:
-            continue
-
-        key += keys_to_letters_list[value_of_key_card]
-        print(key)
+        if value_of_key_card != 27 and value_of_top_card != 27:
+            key += keys_to_letters_list[value_of_key_card]
+            print(key)
 
 
 
