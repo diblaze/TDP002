@@ -2,6 +2,8 @@
 import random
 
 # acc. to assignment we only need two suits (half of deck)
+#spades = 1..13
+#hearts = 1..13 * 2
 suits = {"spades": 1, "hearts": 2}
 values = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7,
           "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12, "thirteen": 13}
@@ -223,11 +225,13 @@ def solitaire_keystream(length=30, deck=create_deck()):
         value_of_key_card = 0
         # top cards value
 
+		#TODO: Fix hearts to be 2 times the value.
         value_of_top_card = get_value_of_card(0, solitaire_deck)
-        #print("Top card: " + str(value_of_top_card))
+        
 
         # numbers = value_of_top_card +
-
+	
+		#TODO: Fix value top card <= 26
         if value_of_top_card <= 13:
             value_of_key_card = get_value_of_card(
                 value_of_top_card + 1, solitaire_deck)
