@@ -6,7 +6,7 @@ import random
 #hearts = 1..13 * 2
 suits = {"spades": 1, "hearts": 2}
 values = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7,
-          "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12, "thirteen": 13}
+          "eight": 8, "nine": 9, "ten": 10, "elseven": 11, "twelve": 12, "thirteen": 13}
 
 joker_a = ["joker_a", 27]
 joker_b = ["joker_b", 27]
@@ -85,7 +85,7 @@ def get_value_of_card(position_of_card, deck):
 
 def get_suit_of_card(position_of_card, deck):
     """Returns the suit of the card that has the specific position in the deck"""
-    suit_int = list(deck[position_of_card][0])
+    suit_int = deck[position_of_card][0]
 
     if suit_int == 0:
         return "Spades"
@@ -225,21 +225,22 @@ def solitaire_keystream(length=30, deck=create_deck()):
         value_of_key_card = 0
         # top cards value
 
-		#TODO: Fix hearts to be 2 times the value.
+        #get value of top card
         value_of_top_card = get_value_of_card(0, solitaire_deck)
-        
+        #get suit of top card
+        suit_of_top_card = get_suit_of_card(0, solitaire_deck)
 
-        # numbers = value_of_top_card +
-	
-		#TODO: Fix value top card <= 26
-        if value_of_top_card <= 13:
+        #if top card is Hearts, then double the value according to the assignment.
+        if(suit_of_top_card == "Hearts"):
+            value_of_top_card *= 2
+
+        #get the key card to be used
+        if value_of_top_card <= 27:
             value_of_key_card = get_value_of_card(
                 value_of_top_card + 1, solitaire_deck)
-        # elif value_of_top_card >= 13:
-            #value_of_key_card = get_value_of_card()
-        #print("Key card:" + str(value_of_key_card))
 
-        if value_of_key_card != 27 and value_of_top_card != 27:
+        #if key card is not a joker then add the correct letter to keypass.
+        if value_of_key_card != 27:
             key += keys_to_letters_list[value_of_key_card]
             # print(key)
 
