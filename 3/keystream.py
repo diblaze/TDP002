@@ -230,9 +230,9 @@ def solitaire_keystream(length=30, deck=create_deck()):
         #get suit of top card
         suit_of_top_card = get_suit_of_card(0, solitaire_deck)
 
-        #if top card is Hearts, then double the value according to the assignment.
+        #if top card is Hearts, then add 13 to the value because one suit should be 14-26 according to the assignment.
         if(suit_of_top_card == "Hearts"):
-            value_of_top_card *= 2
+            value_of_top_card += 13
 
         #get the key card to be used
         if value_of_top_card <= 27:
