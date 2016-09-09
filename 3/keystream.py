@@ -103,6 +103,7 @@ def display_card(position_of_card, deck):
 
 
 def __find_jokers(deck):
+    """Find all the jokers in the deck"""
     jokers = [0, 0]
 
     for position, item in enumerate(deck):
@@ -116,6 +117,7 @@ def __find_jokers(deck):
 
 
 def __move_jokers(deck, pos_a=None, pos_b=None):
+    """Move the specificed joker in deck"""
     # if joker_a is the last card in deck, remove it and insert it under the
     # first card on top.
     if pos_a != None and pos_b == None:
@@ -158,6 +160,7 @@ def __move_jokers(deck, pos_a=None, pos_b=None):
 
 
 def __rearrange_joker_list(joker_list):
+    """Sorts the joker list according to position in deck."""
 
     if joker_list[0] > joker_list[1]:
         joker_list[0], joker_list[1] = joker_list[1], joker_list[0]
@@ -166,6 +169,7 @@ def __rearrange_joker_list(joker_list):
 
 
 def solitaire_keystream(length=30, deck=create_deck()):
+    """Creates the keystream needed for encrypting the string"""
 
     # inserts the jokers into the deck
     insert_card_by_dict(joker_a, deck)
@@ -232,7 +236,7 @@ def solitaire_keystream(length=30, deck=create_deck()):
 
         #if top card is Hearts, then double the value according to the assignment.
         if(suit_of_top_card == "Hearts"):
-            value_of_top_card *= 2
+            value_of_top_card += 13
 
         #get the key card to be used
         if value_of_top_card <= 27:
