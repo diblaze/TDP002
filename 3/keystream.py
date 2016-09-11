@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
-import random
-import deck
+import deck_handler
 
 
 # solitare alfabet
@@ -13,6 +12,9 @@ keys_to_letters_list = {1: "A", 2: "B", 3: "C", 4: "D", 5: "E", 6: "F", 7: "G",
                         8: "H", 9: "I", 10: "J", 11: "K", 12: "L", 13: "M", 14: "N",
                         15: "O", 16: "P", 17: "Q", 18: "R", 19: "S", 20: "T", 21: "U",
                         22: "V", 23: "W", 24: "X", 25: "Y", 26: "Z"}
+
+joker_a = deck_handler.joker_a
+joker_b = deck_handler.joker_b
 
 def __find_jokers(deck):
     """Find all the jokers in the deck"""
@@ -80,15 +82,16 @@ def __rearrange_joker_list(joker_list):
     return joker_list
 
 
-def solitaire_keystream(length=30, deck=deck.create_deck()):
+def solitaire_keystream(length=30, deck=deck_handler.create_deck()):
     """Creates the keystream needed for encrypting the string"""
 
     # inserts the jokers into the deck
-    deck.insert_card_by_dict(joker_a, deck)
-    deck.insert_card_by_dict(joker_b, deck)
+    deck_handler.insert_jokers(deck)
+    #deck_handler.insert_card_by_dict(joker_a, deck)
+    #deck_handler.insert_card_by_dict(joker_b, deck)
     # shuffles the deck
     solitaire_deck = []
-    solitaire_deck = deck.shuffle_deck(deck)
+    solitaire_deck = deck_handler.shuffle_deck(deck)
 
     deck_a = []
     deck_b = []
@@ -124,7 +127,7 @@ def solitaire_keystream(length=30, deck=deck.create_deck()):
         solitaire_deck = deck_c + deck_b + deck_a
 
         # get value of bottom card
-        value_of_top_card = get_value_of_card(
+        value_of_top_card = deck_handler.get_value_of_card(
             len(solitaire_deck) - 1, solitaire_deck)
 
         # split deck from top to number of cards needed
@@ -142,9 +145,9 @@ def solitaire_keystream(length=30, deck=deck.create_deck()):
         # top cards value
 
         #get value of top card
-        value_of_top_card = get_value_of_card(0, solitaire_deck)
+        value_of_top_card = deck_handler.get_value_of_card(0, solitaire_deck)
         #get suit of top card
-        suit_of_top_card = get_suit_of_card(0, solitaire_deck)
+        suit_of_top_card = deck_handler.get_suit_of_card(0, solitaire_deck)
 
         #if top card is Hearts, then double the value according to the assignment.
         if(suit_of_top_card == "Hearts"):
@@ -152,7 +155,7 @@ def solitaire_keystream(length=30, deck=deck.create_deck()):
 
         #get the key card to be used
         if value_of_top_card <= 27:
-            value_of_key_card = get_value_of_card(
+            value_of_key_card = deck_handler.get_value_of_card(
                 value_of_top_card + 1, solitaire_deck)
 
         #if key card is not a joker then add the correct letter to keypass.

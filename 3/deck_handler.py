@@ -38,6 +38,11 @@ def pick_card(deck_to_pick_from):
     """Returns a random card from the deck"""
     return random.choice(deck_to_pick_from)
 
+def insert_jokers(deck_to_insert_into):
+    """Inserts joker_a and joker_b into deck"""
+    deck_to_insert_into.append(joker_a)
+    deck_to_insert_into.append(joker_b)
+
 
 def insert_card_by_name(card_in_text, deck_to_insert_into):
     """Adds a new card to the last postion of the deck
