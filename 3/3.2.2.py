@@ -22,7 +22,9 @@ def convert_to_numbers(string_to_convert):
     """Converts A-Z strings to numbers."""
     numbers_from_string = []
     for letter in string_to_convert:
-        numbers_from_string.append(keystream.letters_to_keys_list[letter])
+
+        numbers_from_string.append(ord(letter)-64)
+        #numbers_from_string.append(keystream.letters_to_keys_list[letter])
     return numbers_from_string
 
 
@@ -35,7 +37,7 @@ def convert_to_letters(list_to_convert):
 	return final_string
 
 
-def sum_numbers_from_lists(list1, list2):
+def sum_numbers_from_lists(list1, list2,):
 	"""Sums two integer lists"""
 
 	temp_list = []
@@ -43,6 +45,7 @@ def sum_numbers_from_lists(list1, list2):
 		temp_num = list1[i] + list2[i]
 		if temp_num > 26:
 			temp_num -= 26
+		#temp_num = temp_num % 26
 		temp_list.append(temp_num)
 	return temp_list
 
