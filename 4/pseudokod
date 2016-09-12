@@ -1,0 +1,38 @@
+LOAD FUNKTIONEN
+1. Öppna filen
+2. Skapa en variabel som håller koll på y, börjar på 0
+3. gör en lista av alla tecken i första raden
+4. för alla object i x listan läs in om vägg, spelare, box, eller storage.
+5. kör motsvarande funktion för objekt
+6. funktionen för objekten sätter in rätt objekt i rätt lista
+
+
+DISPLAY FUNKTIONEN!
+1. Ta emot en färdig lista innehållandes alla objekt på spelplanen
+2. Gå igenom listan och skriv ut objekten.
+   -
+
+Saker som måste göras:
+Lägga till i objektens listor att det är en wall eller player t.e.x.
+
+funktion som läser högsta x och y värdet på wallen
+
+funktion som går igenom varje punkt , ex (0,0) och försöker matcha med listan av alla objekt. om det ej finns, lägg till ett space.
+
+sokoban_display funktionen
+1. Loop som går igenom från y till y max
+2. i den loopen en loop som går igenom från x till x max
+3. där inne använda check_coordinate som tar emot x och y samt boarden.
+
+check_coordinate funktionen
+1. kolla x och y koordinaten i board och se om det finns objekt på den platsen
+2. om det finns objekt returna objektet, annars return none
+
+player_move funktionen
+1. flyttar position på player
+2. check för att titta om det är vägg eller block
+3. om inget där flytta
+4. om block titta bakom blocket för att flytta block och spelare
+5. om vägg, flytta inget
+
+sätta ihope move och 
