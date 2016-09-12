@@ -87,8 +87,6 @@ def solitaire_keystream(length=30, deck=deck_handler.create_deck()):
 
     # inserts the jokers into the deck
     deck_handler.insert_jokers(deck)
-    #deck_handler.insert_card_by_dict(joker_a, deck)
-    #deck_handler.insert_card_by_dict(joker_b, deck)
     # shuffles the deck
     solitaire_deck = []
     solitaire_deck = deck_handler.shuffle_deck(deck)
@@ -104,6 +102,8 @@ def solitaire_keystream(length=30, deck=deck_handler.create_deck()):
 
         jokers = [0, 0]
         # find jokers
+        # jokers[0] always gets joker_a
+        # jokers[1] always gets joker_b
         jokers = __find_jokers(solitaire_deck)
 
         # move joker a
@@ -114,8 +114,10 @@ def solitaire_keystream(length=30, deck=deck_handler.create_deck()):
         # move joker b
         jokers[1] = __move_jokers(solitaire_deck, None, jokers[1])
         # rearrange the joker list to them in correct order
+        jokers = __find_jokers(solitaire_deck)
+        # make sure jokers[0] is the one closest to the top card.
         jokers = __rearrange_joker_list(jokers)
-        #print("Jokers: " + str(jokers))
+
 
         # all cards from top to first joker
         deck_a = solitaire_deck[0:jokers[0]]
@@ -127,13 +129,13 @@ def solitaire_keystream(length=30, deck=deck_handler.create_deck()):
         solitaire_deck = deck_c + deck_b + deck_a
 
         # get value of bottom card
-        value_of_top_card = deck_handler.get_value_of_card(
-            len(solitaire_deck) - 1, solitaire_deck)
+        value_of_bottom_card = deck_handler.get_value_of_card(
+            len(solitaire_deck)-1, solitaire_deck)
 
         # split deck from top to number of cards needed
-        deck_a = solitaire_deck[0:value_of_top_card]
+        deck_a = solitaire_deck[0:value_of_bottom_card]
         # split deck from the rest remaining to second last card
-        deck_b = solitaire_deck[value_of_top_card:len(deck) - 2]
+        deck_b = solitaire_deck[value_of_bottom_card:len(deck) - 2]
         # takes the last card
         deck_c = solitaire_deck[len(deck) - 2: len(deck) - 1]
 
@@ -156,7 +158,7 @@ def solitaire_keystream(length=30, deck=deck_handler.create_deck()):
         #get the key card to be used
         if value_of_top_card <= 27:
             value_of_key_card = deck_handler.get_value_of_card(
-                value_of_top_card + 1, solitaire_deck)
+                value_of_top_card, solitaire_deck)
 
         #if key card is not a joker then add the correct letter to keypass.
         if value_of_key_card != 27:
