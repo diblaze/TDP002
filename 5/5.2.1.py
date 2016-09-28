@@ -27,7 +27,7 @@ def dbsearch(field_to_match, search):
     return matched_entries
 
 def contains(word_to_search_for, sentence):
-    return bool([word for word in sentence if word_to_search_for == word])
+    return bool(list(filter(lambda word: word == word_to_search_for, sentence)))
 
 
 if __name__ == "__main__":
@@ -37,4 +37,4 @@ if __name__ == "__main__":
 
     haystack = "Can you find the needle in this haystack?".split()
     print(contains("needle", haystack))
-
+    print(contains("on", haystack))
