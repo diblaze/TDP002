@@ -47,7 +47,14 @@ def compose(first_function, second_function):
     """
     return lambda x: first_function(second_function(x))
 
-#def make_filter_map(first_filter, second_filter):
+def make_filter_map(first_filter, second_filter):
+    """
+
+    """
+    map_fixed = partial(map, second_filter)
+    filter_fixed = partial(filter, first_filter)
+
+    return compose(list, compose(filter_fixed, map_fixed))
 
 
 if __name__ == "__main__":
