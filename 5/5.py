@@ -29,6 +29,26 @@ def dbsearch(field_to_match, search):
 def contains(word_to_search_for, sentence):
     return bool(list(filter(lambda word: word == word_to_search_for, sentence)))
 
+def generate_list(function, amount):
+    """
+        Uses the inputted function for every index and returns a list
+    """
+    return list(map(function, range(1, amount + 1)))
+
+def partial(function, amount):
+    """
+        Returns a lambda function that takes the inputted function and and hard copies the second parameter into the first lambda argument.
+    """
+    return lambda x: function(amount, x)
+
+def compose(first_function, second_function):
+    """
+        Takes the second function and uses it as a input for first function.
+    """
+    return lambda x: first_function(second_function(x))
+
+#def make_filter_map(first_filter, second_filter):
+
 
 if __name__ == "__main__":
     operations()
@@ -38,3 +58,4 @@ if __name__ == "__main__":
     haystack = "Can you find the needle in this haystack?".split()
     print(contains("needle", haystack))
     print(contains("on", haystack))
+
