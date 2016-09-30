@@ -1,18 +1,17 @@
 #! /usr/bin/env python3
 from functools import reduce
 
-def operations():
+def operations(func):
     """
         Laboration 1a omgjord till lambda funktioner.
     """
-    #lambda for adding two numbers together
-    plus = lambda x1, x2: x1 + x2
-    #lambda for multiplying two numbers
-    multiply = lambda x1, x2: x1 * x2
+    print(reduce(func,range(1,513)))
 
-    operators = [plus, multiply]
-    for func in operators:
-        print(reduce(func,range(1,513)))
+
+#lambda for adding two numbers together
+plus = lambda x1, x2: x1 + x2
+#lambda for multiplying two numbers
+multiply = lambda x1, x2: x1 * x2
 
 
 def dbsearch(field_to_match, search):
@@ -58,7 +57,8 @@ def make_filter_map(first_filter, second_filter):
 
 
 if __name__ == "__main__":
-    operations()
+    operations(plus)
+    operations(multiply)
 
     print(dbsearch("name", "Jakob"))
 
