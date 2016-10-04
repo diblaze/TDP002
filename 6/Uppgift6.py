@@ -28,14 +28,14 @@ def linear_search(list_to_search_in, key_to_search_for, field = lambda item: ite
 
 def binary_search(list_to_search_in, key_to_search_for, field = lambda item: item["title"]):
     """
-        Does a binary search through a list.
+        Does a binary search through a list containing dictionaries.
         Defaults to searching for "title" if no other filed is specified.
     """
 
     if len(list_to_search_in) == 0:
         return "Error"
 
-    #to make the seach work with lowercase and uppercase - make everyting to lowercase.
+    #to make the search work with lowercase and uppercase - make everything to lowercase.
     field_to_use = lambda l: field(l).lower()
 
     key_to_search_for = key_to_search_for.lower()
