@@ -56,7 +56,7 @@ def binary_search(list_to_search_in, key_to_search_for, field = lambda item: ite
         #if search key is at a higher index than mid
         elif field_to_use(list_to_search_in[mid]) < key_to_search_for:
             low = mid + 1
-        #item is found
+            #item is found
         else:
             return list_to_search_in[mid]
 
@@ -67,7 +67,7 @@ def binary_search(list_to_search_in, key_to_search_for, field = lambda item: ite
 if __name__ == "__main__":
     #print(linear_search(imdb, "voice"))
     #print(linear_search(imdb, 10, lambda item: item["score"]))
-    print(binary_search(imdb, "Lie to me", lambda item: item["title"]))
+    #print(binary_search(imdb, "Lie to me", lambda item: item["title"]))
 
 
 
