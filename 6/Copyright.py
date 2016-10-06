@@ -1,50 +1,86 @@
-#! /usr/bin/env python3
-import argparse, os
+#! /usr/bin/env/python3
+import argparse
+import re
+import os
 
 parser = argparse.ArgumentParser(
-    description="Add or replace copyright information in files.")
+    description="Add or replace copyright informatin in files.")
+parser.add_argument("copyright", help="The file which holds the copyright")
 parser.add_argument(
-    "copyright", help="The file which holds the copyright data.")
+    "filename", help="The folder or file that the operation should work on")
 parser.add_argument(
-    "files", help="The folder or files that the operation should work on.")
-parser.add_argument(
-    "-f", help="Choose which extensions the operation should work on.")
-parser.add_argument("-r", help="Choose file extension for the result file.")
+    "-f", help="Choose which exstension the operation should work on")
+parser.add_argument("-r", help="Choose file extension for the result.")
 args = parser.parse_args()
 
 
-def get_files(f, extension=None):
-    if os.path.isdir(f):
-        files = []
-        for file in os.listdir(f):
-            # Recursive, first param is the folder + filename
-            files.append(get_files(f + file, extension))
-        return files
+#regex pattern to capture everything after BEGIN COPYRIGHT and everything before END COPYRIGHT. 
+pattern = "(?<=BEGIN COPYRIGHT)(.|\n)*?(?=END COPYRIGHT)"
+
+
+def add_copyright(filename):
+    # read the copyright file
+    copyright_text = read_file(args.copyright)
+    
+    #read current file contents
+    old_f = read_file(filename)
+    #use regex to change everything between the markers in the file contents.
+    new_f = re.sub(pattern, "\n" + copyright_text, old_f)
+    #save the file with the new changes
+    return save_file(filename, new_f)
+
+
+def get_files():
+    """
+        Gets the file/files, and runs them through the copyright function.
+    """
+    #if the path given is a directory
+    if os.path.isdir(args.filename):
+        #if the path does NOT end with "/" then we should add it.
+        if not args.filename.endswith("/"):
+            args.filename = args.filename + "/"
+        #for each file in the directory
+        for ffile in os.listdir(args.filename):
+            #if user specified an extension, only change the files that have the extension specified.
+            if args.f and ffile.endswith(args.f):
+                add_copyright(args.filename + ffile)
+            #otherwise change all files in directory
+            else:
+                add_copyright(args.filename + ffile)
     else:
-        try:
-            file_buffer = open(f)
-            lines = file_buffer.readlines()
-            print(lines)
-            return lines
-        except:
-            raise IOError
-            
-def get_indexes(file_to_read, string_to_find):
-    return [i for i, line in enumerate(file_to_read) if string_to_find in line ]
+        #change file specified
+        add_copyright(args.filename)
 
-def remove_copyright(f):
+
+def read_file(filename):
     """
-        Removes everything between copyright markers.
+        Returns file contents.
     """
+    with open(filename) as f:
+        file_contents = f.read()
+    return(file_contents)
 
-    begin_indexes = get_indexes(f, "BEGIN COPYRIGHT")
-    end_indexes = get_indexes(f, "END COPYRIGHT")
 
-    for x in range(len(begin_indexes) - 1):
-        f[begin_indexes[x]: end_indexes[x]] = ""
-    return f
+def save_file(filename, edited_content):
+    """
+        Saves changes to file.
+    """
+    #if user specifed a different extenstion to save to
+    if args.r:
+        #get filename and extension from os.path - easy way to split the filename from the extension        
+        org_filename, extension = os.path.splitext(filename)
 
-filesss = get_files("Search.py")
+        file_new_name = org_filename + args.r
+        
+        #write changes to file
+        with open(file_new_name, "w") as f:
+            f.write(edited_content)
+    else:
+        #write changes to file
+        with open(filename, "w") as f:
+            f.write(edited_content)
 
-filesss = remove_copyright(filesss)
-print(filesss)
+
+if __name__ == "__main__":
+    #if module is runned as program
+    get_files()

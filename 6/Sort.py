@@ -17,6 +17,7 @@ def insertion_sort(list_to_sort, field=lambda l: l[0]):
         list_to_sort[j + 1] = key
 
 
+
 print("_" * 40)
 db = [("j", "g"), ("a", "u"), ("k", "l"), ("o", "i"),
       ("b", "s"), ("@", "."), ("p", "s"), ("o", "e")]
