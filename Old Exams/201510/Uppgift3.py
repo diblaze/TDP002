@@ -1,5 +1,6 @@
 #! /usr/env/bin python3
 
+
 def scrape_rates(filename):
     dict_rate = {}
 
@@ -15,7 +16,7 @@ def scrape_rates(filename):
 
 def convert_to_sek(string, dict_rate):
     string = string.split(" ")
-    
+
     if len(string) == 2:
         currency_multiply = dict_rate[string[0]]
         value = string[1]
@@ -24,12 +25,6 @@ def convert_to_sek(string, dict_rate):
     else:
         return float(string[0])
 
-
-        
-
-
-
-    
 
 if __name__ == "__main__":
     dict_rate = scrape_rates("exchange_rates.txt")
@@ -42,11 +37,8 @@ if __name__ == "__main__":
         userInput = input()
         list_of_inputs.append(userInput)
 
-
     sumOfInputs = float(0)
     for i in list_of_inputs:
         sumOfInputs += convert_to_sek(i, dict_rate)
-    
+
     print("Totalsumma: %.2f" % sumOfInputs)
-       
-    
